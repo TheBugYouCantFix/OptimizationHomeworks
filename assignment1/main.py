@@ -30,6 +30,15 @@ Input example 2
 1 2 6
 -1 1 1
 0 1 2
+
+Input examlpe 3
+2
+5 4
+4
+6 4 24
+1 2 6
+-1 1 0
+0 1 2
 """
 n_xs = int(input())
 z = list(map(int, input().split()))
@@ -47,6 +56,12 @@ for i in range(n_constraints):
     c = list(map(int, input().split()))
     c = c[:-1] + slacks + [c[-1]] 
     constraints.append(c)
+
+# checking whether the right hand side values are non-negative
+for i in constraints:
+    if i[-1] <= 0:
+        print("The method is not applicable!")
+        exit(0)
 
 table = [z] + constraints
 while any(map(lambda x: x < 0, table[0])):
