@@ -39,6 +39,9 @@ Input examlpe 3
 1 2 6
 -1 1 0
 0 1 2
+
+
+Note: all problems here are assumed to be maximization problems with "<=" signs in the constraints 
 """
 n_xs = int(input())
 z = list(map(int, input().split()))
