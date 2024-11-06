@@ -37,32 +37,7 @@ def north_west_corner(cost_matrix, source_supply, destination_demand):
                     break
             if break_flag == 1:
                 break
-        #Performing calculations and matrix manipulations in case of source supply being greater than the destination demand
-        if source_supply[key_cell_i] > destination_demand[key_cell_j]:
-            result_cost_matrix[key_cell_i][key_cell_j] = destination_demand[key_cell_j] * cost_matrix[key_cell_i][key_cell_j]
-            result_matrix[key_cell_i][key_cell_j] = destination_demand[key_cell_j]
-            for supply in cost_matrix:
-                supply[key_cell_j] = -1
-            source_supply[key_cell_i] -= destination_demand[key_cell_j]
-            destination_demand[key_cell_j] = 0
-        #Performing calculations and matrix manipulations in case of source supply being lesser than the destination demand
-        elif source_supply[key_cell_i] < destination_demand[key_cell_j]:
-            result_cost_matrix[key_cell_i][key_cell_j] = source_supply[key_cell_i] * cost_matrix[key_cell_i][key_cell_j]
-            result_matrix[key_cell_i][key_cell_j] = source_supply[key_cell_i]
-            for j in range(len(cost_matrix[key_cell_i])):
-                cost_matrix[key_cell_i][j] = -1
-            destination_demand[key_cell_j] -= source_supply[key_cell_i]
-            source_supply[key_cell_i] = 0
-        #Performing calculations and matrix manipulations in case of source supply being equal to destination demand
-        else:
-            result_cost_matrix[key_cell_i][key_cell_j] = destination_demand[key_cell_j] * cost_matrix[key_cell_i][key_cell_j]
-            result_matrix[key_cell_i][key_cell_j] = source_supply[key_cell_i]
-            for supply in cost_matrix:
-                supply[key_cell_j] = -1
-            for j in range(len(cost_matrix[key_cell_i])):
-                cost_matrix[key_cell_i][j] = -1
-            destination_demand[key_cell_j] = 0
-            source_supply[key_cell_i] = 0
+        allocate_supply(key_cell_i, key_cell_j, cost_matrix, result_cost_matrix, result_matrix, destination_demand, source_supply)
     #Printing results
     print("North-west approximation method basic feasible solution:")
     print_matrix(result_matrix)
@@ -127,31 +102,9 @@ def vogel(cost_matrix, source_supply, destination_demand):
                 if cost_matrix[i][key_cell_j] < min_value and cost_matrix[i][key_cell_j] != -1:
                     key_cell_i = i
                     max_value = cost_matrix[i][key_cell_j]
-        #Performing the same calculations and manipulations as in the previous method
-        #TODO: consider bringing this calculations to a separate function
-        if source_supply[key_cell_i] > destination_demand[key_cell_j]:
-            result_cost_matrix[key_cell_i][key_cell_j] = destination_demand[key_cell_j] * cost_matrix[key_cell_i][key_cell_j]
-            result_matrix[key_cell_i][key_cell_j] = destination_demand[key_cell_j]
-            for supply in cost_matrix:
-                supply[key_cell_j] = -1
-            source_supply[key_cell_i] -= destination_demand[key_cell_j]
-            destination_demand[key_cell_j] = 0
-        elif source_supply[key_cell_i] < destination_demand[key_cell_j]:
-            result_cost_matrix[key_cell_i][key_cell_j] = source_supply[key_cell_i] * cost_matrix[key_cell_i][key_cell_j]
-            result_matrix[key_cell_i][key_cell_j] = source_supply[key_cell_i]
-            for j in range(len(cost_matrix[key_cell_i])):
-                cost_matrix[key_cell_i][j] = -1
-            destination_demand[key_cell_j] -= source_supply[key_cell_i]
-            source_supply[key_cell_i] = 0
-        else:
-            result_cost_matrix[key_cell_i][key_cell_j] = destination_demand[key_cell_j] * cost_matrix[key_cell_i][key_cell_j]
-            result_matrix[key_cell_i][key_cell_j] = source_supply[key_cell_i]
-            for supply in cost_matrix:
-                supply[key_cell_j] = -1
-            for j in range(len(cost_matrix[key_cell_i])):
-                cost_matrix[key_cell_i][j] = -1
-            destination_demand[key_cell_j] = 0
-            source_supply[key_cell_i] = 0
+
+        allocate_supply(key_cell_i, key_cell_j, cost_matrix, result_cost_matrix, result_matrix, destination_demand, source_supply)
+
     print("Vogel's approximation method basic feasible solution:")
     print_matrix(result_matrix)
     print("Total cost of the solution is", sum_matrix(result_cost_matrix), sep=" ")
@@ -185,33 +138,38 @@ def russel(cost_matrix, source_supply, destination_demand):
                         key_cell_i = i
                         key_cell_j = j
 
-        if source_supply[key_cell_i] > destination_demand[key_cell_j]:
-            result_cost_matrix[key_cell_i][key_cell_j] = destination_demand[key_cell_j] * cost_matrix[key_cell_i][key_cell_j]
-            result_matrix[key_cell_i][key_cell_j] = destination_demand[key_cell_j]
-            for supply in cost_matrix:
-                supply[key_cell_j] = -1
-            source_supply[key_cell_i] -= destination_demand[key_cell_j]
-            destination_demand[key_cell_j] = 0
-        elif source_supply[key_cell_i] < destination_demand[key_cell_j]:
-            result_cost_matrix[key_cell_i][key_cell_j] = source_supply[key_cell_i] * cost_matrix[key_cell_i][key_cell_j]
-            result_matrix[key_cell_i][key_cell_j] = source_supply[key_cell_i]
-            for j in range(len(cost_matrix[key_cell_i])):
-                cost_matrix[key_cell_i][j] = -1
-            destination_demand[key_cell_j] -= source_supply[key_cell_i]
-            source_supply[key_cell_i] = 0
-        else:
-            result_cost_matrix[key_cell_i][key_cell_j] = destination_demand[key_cell_j] * cost_matrix[key_cell_i][key_cell_j]
-            result_matrix[key_cell_i][key_cell_j] = source_supply[key_cell_i]
-            for supply in cost_matrix:
-                supply[key_cell_j] = -1
-            for j in range(len(cost_matrix[key_cell_i])):
-                cost_matrix[key_cell_i][j] = -1
-            destination_demand[key_cell_j] = 0
-            source_supply[key_cell_i] = 0
+        allocate_supply(key_cell_i, key_cell_j, cost_matrix, result_cost_matrix, result_matrix, destination_demand, source_supply)
 
     print("Russel's approximation method basic feasible solution:")
     print_matrix(result_matrix)
     print("Total cost of the solution is", sum_matrix(result_cost_matrix), sep=" ")
+
+def allocate_supply(key_cell_i, key_cell_j, cost_matrix, result_cost_matrix, result_matrix, destination_demand, source_supply):
+    if source_supply[key_cell_i] > destination_demand[key_cell_j]:
+        result_cost_matrix[key_cell_i][key_cell_j] = destination_demand[key_cell_j] * cost_matrix[key_cell_i][
+            key_cell_j]
+        result_matrix[key_cell_i][key_cell_j] = destination_demand[key_cell_j]
+        for supply in cost_matrix:
+            supply[key_cell_j] = -1
+        source_supply[key_cell_i] -= destination_demand[key_cell_j]
+        destination_demand[key_cell_j] = 0
+    elif source_supply[key_cell_i] < destination_demand[key_cell_j]:
+        result_cost_matrix[key_cell_i][key_cell_j] = source_supply[key_cell_i] * cost_matrix[key_cell_i][key_cell_j]
+        result_matrix[key_cell_i][key_cell_j] = source_supply[key_cell_i]
+        for j in range(len(cost_matrix[key_cell_i])):
+            cost_matrix[key_cell_i][j] = -1
+        destination_demand[key_cell_j] -= source_supply[key_cell_i]
+        source_supply[key_cell_i] = 0
+    else:
+        result_cost_matrix[key_cell_i][key_cell_j] = destination_demand[key_cell_j] * cost_matrix[key_cell_i][
+            key_cell_j]
+        result_matrix[key_cell_i][key_cell_j] = source_supply[key_cell_i]
+        for supply in cost_matrix:
+            supply[key_cell_j] = -1
+        for j in range(len(cost_matrix[key_cell_i])):
+            cost_matrix[key_cell_i][j] = -1
+        destination_demand[key_cell_j] = 0
+        source_supply[key_cell_i] = 0
 
 def print_matrix(matrix):
     for i in range(len(matrix)):
