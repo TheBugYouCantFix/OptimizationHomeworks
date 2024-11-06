@@ -1,3 +1,4 @@
 .vscode
 .venv
 .idea
+/assignment3/test.py
