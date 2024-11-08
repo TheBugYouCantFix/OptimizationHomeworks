@@ -20,6 +20,20 @@ Whole input (for copying):
 20 30 25
 15 25 20 15
 '''
+
+if __name__ == "__main__":
+    cost_matrix = get_cost_matrix_input()
+    print("Input source supply vector")
+    source_supply = get_vector()
+    print("input destination demand vector")
+    destination_demand = get_vector()
+    check_balance(source_supply, destination_demand)
+    check_dimensions(cost_matrix, source_supply, destination_demand)
+    construct_input_table(cost_matrix, source_supply, destination_demand)
+    north_west_corner(get_double_array_copy(cost_matrix), source_supply.copy(), destination_demand.copy())
+    vogel(get_double_array_copy(cost_matrix), source_supply.copy(), destination_demand.copy())
+    russel(get_double_array_copy(cost_matrix), source_supply.copy(), destination_demand.copy())
+
 def north_west_corner(cost_matrix, source_supply, destination_demand):
     #Initialize result matrix
     result_matrix = [[0 for _ in range(4)] for _ in range(3)]
@@ -274,16 +288,5 @@ def construct_input_table(cost_matrix, source_supply, destination_demand):
 
 
 
-if __name__ == "__main__":
-    cost_matrix = get_cost_matrix_input()
-    print("Input source supply vector")
-    source_supply = get_vector()
-    print("input destination demand vector")
-    destination_demand = get_vector()
-    check_balance(source_supply, destination_demand)
-    check_dimensions(cost_matrix, source_supply, destination_demand)
-    construct_input_table(cost_matrix, source_supply, destination_demand)
-    north_west_corner(get_double_array_copy(cost_matrix), source_supply.copy(), destination_demand.copy())
-    vogel(get_double_array_copy(cost_matrix), source_supply.copy(), destination_demand.copy())
-    russel(get_double_array_copy(cost_matrix), source_supply.copy(), destination_demand.copy())
+
 
