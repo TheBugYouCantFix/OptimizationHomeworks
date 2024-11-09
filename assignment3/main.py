@@ -21,19 +21,6 @@ Whole input (for copying):
 15 25 20 15
 '''
 
-if __name__ == "__main__":
-    cost_matrix = get_cost_matrix_input()
-    print("Input source supply vector")
-    source_supply = get_vector()
-    print("input destination demand vector")
-    destination_demand = get_vector()
-    check_balance(source_supply, destination_demand)
-    check_dimensions(cost_matrix, source_supply, destination_demand)
-    construct_input_table(cost_matrix, source_supply, destination_demand)
-    north_west_corner(get_double_array_copy(cost_matrix), source_supply.copy(), destination_demand.copy())
-    vogel(get_double_array_copy(cost_matrix), source_supply.copy(), destination_demand.copy())
-    russel(get_double_array_copy(cost_matrix), source_supply.copy(), destination_demand.copy())
-
 def north_west_corner(cost_matrix, source_supply, destination_demand):
     #Initialize result matrix
     result_matrix = [[0 for _ in range(4)] for _ in range(3)]
@@ -55,7 +42,7 @@ def north_west_corner(cost_matrix, source_supply, destination_demand):
         #Allocating supply to found cell
         allocate_supply(key_cell_i, key_cell_j, cost_matrix, result_matrix, destination_demand, source_supply)
     #Printing results
-    print("North-west approximation method basic feasible solution:")
+    print("North-west corner method basic feasible solution:")
     print_matrix(result_matrix)
 
 def vogel(cost_matrix, source_supply, destination_demand):
@@ -167,7 +154,7 @@ def russel(cost_matrix, source_supply, destination_demand):
         # Allocating supply to the found supply from found demand
         allocate_supply(key_cell_i, key_cell_j, cost_matrix, result_matrix, destination_demand, source_supply)
 
-    print("Russel's approximation method basic feasible solution:")
+    print("Russell's approximation method basic feasible solution:")
     print_matrix(result_matrix)
 
 def allocate_supply(key_cell_i, key_cell_j, cost_matrix, result_matrix, destination_demand, source_supply):
@@ -284,7 +271,18 @@ def construct_input_table(cost_matrix, source_supply, destination_demand):
     print("Input parameter table:")
     print(parameter_table)
 
-
+if __name__ == "__main__":
+    cost_matrix = get_cost_matrix_input()
+    print("Input source supply vector")
+    source_supply = get_vector()
+    print("input destination demand vector")
+    destination_demand = get_vector()
+    check_balance(source_supply, destination_demand)
+    check_dimensions(cost_matrix, source_supply, destination_demand)
+    construct_input_table(cost_matrix, source_supply, destination_demand)
+    north_west_corner(get_double_array_copy(cost_matrix), source_supply.copy(), destination_demand.copy())
+    vogel(get_double_array_copy(cost_matrix), source_supply.copy(), destination_demand.copy())
+    russel(get_double_array_copy(cost_matrix), source_supply.copy(), destination_demand.copy())
 
 
 
