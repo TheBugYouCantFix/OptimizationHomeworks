@@ -109,7 +109,7 @@ def vogel(cost_matrix, source_supply, destination_demand):
             for i in range(len(cost_matrix)):
                 if cost_matrix[i][key_cell_j] < min_value and cost_matrix[i][key_cell_j] != -1:
                     key_cell_i = i
-                    max_value = cost_matrix[i][key_cell_j]
+                    min_value = cost_matrix[i][key_cell_j]
         #Allocating supply from found supply to found demand
         allocate_supply(key_cell_i, key_cell_j, cost_matrix, result_matrix, destination_demand, source_supply)
 
